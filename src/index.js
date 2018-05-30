@@ -2,7 +2,7 @@
  * Created by helti on 2018/5/6.
  */
 
-import './css/index.css'
+import './style/index.scss'
 
 import _ from 'lodash'
 

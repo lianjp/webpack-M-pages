@@ -22,7 +22,7 @@ module.exports = {
           fallback: "style-loader",
           use: [
             {
-              loader: 'css-loader',
+              loader: 'style-loader',
               options: {
                 minimize: true //css压缩
               }
@@ -31,27 +31,43 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader'
-        ]
-      },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: [{
+            loader: "css-loader",
             options: {
-              limit: 8192
+              minimize: true,
+              sourceMap: true
             }
-          }
-        ]
+          }, {
+            loader: "sass-loader",
+            options: {
+              outputStyle: 'compressed',
+              sourceMap: true
+            }
+          }]
+        })
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          'file-loader'
-        ]
+        test: /\.html$/,
+        loader: 'html-loader?attrs=img:src img:data-src'
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: '/static/img/[name].[hash:7].[ext]'
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: '/static/fonts/[name].[ext]'
+        }
       },
       {
         test: /\.(csv|tsv)$/,
@@ -68,12 +84,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: 'index'
-    })
   ],
   output: {
-    filename: "[name][hash].js",
+    filename: "static/js/[name][hash].js",
     chunkFilename: '[name].[chunkhash].js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/'
