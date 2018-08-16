@@ -1,7 +1,11 @@
 const path = require('path');
-
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const devMode = process.env.NODE_ENV !== 'production'
+
+
+console.log('devmode', devMode)
 
 module.exports = {
   entry: {
@@ -9,30 +13,35 @@ module.exports = {
     about: './src/about.js'
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         exclude: /node_modules/,
         loader: "babel-loader"
       },
       {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [{
-            loader: "css-loader",
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          devMode ? 'style-loader' : {
+            loader: MiniCssExtractPlugin.loader,
+            options: {}
+          },
+          {
+            loader: 'css-loader',
             options: {
+              // If you are having trouble with urls not resolving add this setting.
+              // See https://github.com/webpack-contrib/css-loader#url
+              url: false,
               minimize: true,
               sourceMap: true
             }
-          }, {
-            loader: "sass-loader",
+          },
+          {
+            loader: 'sass-loader',
             options: {
-              outputStyle: 'compressed',
               sourceMap: true
             }
-          }]
-        })
+          }
+        ],
       },
       {
         test: /\.html$/,
@@ -68,8 +77,7 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-  ],
+  plugins: [],
   output: {
     filename: "static/js/[name][hash].js",
     chunkFilename: '[name].[chunkhash].js',

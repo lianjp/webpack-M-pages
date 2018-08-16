@@ -9,7 +9,10 @@ module.exports = merge(common, {
   plugins: [
 
     new HtmlWebpackPlugin({
-      title: 'index'
+      "filename": "index.html",
+      "template": "./index.html",
+      "chuckName": "index",
+      "chunks": ['index']
     }),
   ],
   devServer: {
