@@ -1,21 +1,11 @@
-const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const merge = require("webpack-merge");
+const common = require("./webpack.common.js");
 
 module.exports = merge(common, {
-  devtool: 'source-map',
-  plugins: [
-
-    new HtmlWebpackPlugin({
-      "filename": "index.html",
-      "template": "./index.html",
-      "chuckName": "index",
-      "chunks": ['index']
-    }),
-  ],
+  devtool: "source-map",
+  mode: "development",
+  plugins: [],
   devServer: {
-    contentBase: './dist'
+    contentBase: "./dist"
   }
 });
